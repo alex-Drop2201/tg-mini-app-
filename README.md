@@ -24,7 +24,7 @@
    скачивается в браузер, но **токен бота и другие секреты сюда не коммитим никогда**.
 4. **Pages → Build and deployment → Source: GitHub Actions.**
 5. **Actions → Build & Deploy → Run workflow.** После завершения сайт доступен по адресу
-   `https://alex-drop2201.github.io/<имя-репозитория>/`.
+   `https://alex-drop2201.github.io/tg-mini-app-/` (меняется вместе с именем репозитория).
 
 ### Подключить к боту
 
