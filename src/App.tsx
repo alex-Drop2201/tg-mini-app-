@@ -1,58 +1,51 @@
-import { useState } from 'react'
-import { OptionsEditor } from './OptionsEditor.tsx'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { paletteOf, presetName, useColorSettings } from './colors.ts'
 import { labelOf, useOptions } from './options.ts'
-import { haptic } from './telegram.ts'
-import { useSpin } from './wheel/useSpin.ts'
-import { Wheel } from './wheel/Wheel.tsx'
+import { ColorsScreen } from './screens/ColorsScreen.tsx'
+import { WheelScreen } from './screens/WheelScreen.tsx'
+import { useTelegramNavigation } from './useTelegramNavigation.ts'
+
+type Screen = 'wheel' | 'colors'
 
 export default function App() {
   const [options, setOptions] = useOptions()
-  const { groupRef, spin } = useSpin()
-  const [spinning, setSpinning] = useState(false)
-  const [winner, setWinner] = useState<number | null>(null)
+  const [colors, setColors] = useColorSettings()
+  const [screen, setScreen] = useState<Screen>('wheel')
+  const wheelScroll = useRef(0)
 
-  if (!options) return <main className="app" />
+  const openColors = useCallback(() => {
+    setScreen((current) => {
+      if (current === 'wheel') wheelScroll.current = window.scrollY
+      return 'colors'
+    })
+  }, [])
+  const back = useCallback(() => setScreen('wheel'), [])
+
+  useTelegramNavigation(screen !== 'wheel', openColors, back)
+
+  // Настройки открываются сверху, а при возврате колесо там же, где его оставили.
+  useLayoutEffect(() => {
+    window.scrollTo(0, screen === 'wheel' ? wheelScroll.current : 0)
+  }, [screen])
+
+  if (!options || !colors) return <main className="app" />
 
   const labels = options.map(labelOf)
 
-  const handleSpin = () => {
-    if (spinning) return
-    setWinner(null)
-    setSpinning(true)
-    spin(labels.length, (index) => {
-      setSpinning(false)
-      setWinner(index)
-      haptic.success()
-    })
-  }
-
-  const handleChange = (next: string[]) => {
-    setWinner(null)
-    setOptions(next)
-  }
-
   return (
-    <main className="app">
-      <h1>Колесо решений</h1>
-
-      <Wheel labels={labels} winner={winner} groupRef={groupRef} onClick={handleSpin} />
-
-      <div className="result" aria-live="polite">
-        {winner !== null ? (
-          <>
-            <span className="hint">Выпало</span>
-            <strong>{labels[winner]}</strong>
-          </>
-        ) : (
-          <span className="hint">{spinning ? 'Крутится…' : 'Нажмите «Крутить» или на колесо'}</span>
-        )}
-      </div>
-
-      <button className="button" onClick={handleSpin} disabled={spinning}>
-        {spinning ? 'Крутится…' : 'Крутить'}
-      </button>
-
-      <OptionsEditor options={options} disabled={spinning} onChange={handleChange} />
-    </main>
+    <>
+      <WheelScreen
+        hidden={screen !== 'wheel'}
+        options={options}
+        labels={labels}
+        palette={paletteOf(colors)}
+        paletteName={presetName(colors.preset)}
+        onOptionsChange={setOptions}
+        onOpenColors={openColors}
+      />
+      {screen === 'colors' && (
+        <ColorsScreen settings={colors} labels={labels} onChange={setColors} onBack={back} />
+      )}
+    </>
   )
 }

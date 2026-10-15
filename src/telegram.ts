@@ -8,6 +8,12 @@ export const isInTelegram = Boolean(tg?.initData)
 
 export const hasCloudStorage = isInTelegram && Boolean(tg?.isVersionAtLeast('6.9'))
 
+/** Кнопка «Назад» в шапке Telegram. */
+export const hasBackButton = isInTelegram && Boolean(tg?.isVersionAtLeast('6.1'))
+
+/** Пункт «Настройки» в меню ⋯ мини-приложения. */
+export const hasSettingsButton = isInTelegram && Boolean(tg?.isVersionAtLeast('7.0'))
+
 export const haptic = {
   /** Короткий «щелчок»: сектор колеса прошёл под стрелкой. */
   tick() {

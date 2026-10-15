@@ -1,4 +1,5 @@
 import type { Ref } from 'react'
+import { sectorColors, textColorOn } from '../colors.ts'
 
 const RADIUS = 100
 const HUB_RADIUS = 14
@@ -9,19 +10,23 @@ const TEXT_LENGTH = TEXT_END - HUB_RADIUS - 4
 type Props = {
   labels: string[]
   winner: number | null
-  groupRef: Ref<SVGGElement>
-  onClick: () => void
+  /** Цвета палитры; null — оттенки цвета кнопки из темы Telegram. */
+  palette: string[] | null
+  groupRef?: Ref<SVGGElement>
+  onClick?: () => void
+  className?: string
 }
 
-export function Wheel({ labels, winner, groupRef, onClick }: Props) {
+export function Wheel({ labels, winner, palette, groupRef, onClick, className = '' }: Props) {
   const n = labels.length
   const sector = 360 / n
   const fontSize = n <= 4 ? 11 : n <= 8 ? 9.5 : 8
   const maxChars = Math.floor(TEXT_LENGTH / (fontSize * 0.56))
+  const fills = palette && sectorColors(palette, n)
 
   return (
     <svg
-      className="wheel"
+      className={`wheel${fills ? ' palette' : ''} ${className}`}
       viewBox="-110 -110 220 220"
       role="img"
       aria-label="Колесо решений"
@@ -32,14 +37,19 @@ export function Wheel({ labels, winner, groupRef, onClick }: Props) {
         {labels.map((label, i) => {
           const middle = i * sector + sector / 2
           const state = winner === null ? '' : winner === i ? ' winner' : ' dim'
+          const tone = fills ? '' : ` tone-${toneOf(i, n)}`
           return (
-            <g key={i} className={`sector tone-${toneOf(i, n)}${state}`}>
-              <path d={sectorPath(i * sector, (i + 1) * sector)} />
+            <g key={i} className={`sector${tone}${state}`}>
+              <path
+                d={sectorPath(i * sector, (i + 1) * sector)}
+                style={fills ? { fill: fills[i] } : undefined}
+              />
               <text
                 transform={`rotate(${middle - 90}) translate(${TEXT_END} 0)`}
                 textAnchor="end"
                 dominantBaseline="central"
                 fontSize={fontSize}
+                style={fills ? { fill: textColorOn(fills[i]) } : undefined}
               >
                 {truncate(label, maxChars)}
               </text>
@@ -55,7 +65,7 @@ export function Wheel({ labels, winner, groupRef, onClick }: Props) {
 }
 
 /**
- * Тон сектора: 0 — цвет кнопки Telegram, 1 и 2 — его прозрачные оттенки.
+ * Тон сектора в стиле Telegram: 0 — цвет кнопки, 1 и 2 — его прозрачные оттенки.
  * При нечётном n последний сектор получает тон 2, чтобы не совпасть с первым.
  */
 function toneOf(i: number, n: number) {
