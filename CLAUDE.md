@@ -9,8 +9,10 @@
 
 ## Проект
 
-Telegram Mini App: React 19 + TypeScript + Vite. Деплой на GitHub Pages через
+«Колесо решений»: Telegram Mini App на React 19 + TypeScript + Vite. Деплой на GitHub Pages через
 `.github/workflows/deploy.yml` при push в `main` (только если репозиторий публичный).
+План по этапам с отметками о готовности лежит в README («План»): после этапа обновляй галочки.
+Вид колеса владелец выбрал «в стиле Telegram»: сектора в оттенках цвета кнопки из темы.
 
 - Доступ к Telegram API только через `src/telegram.ts`. Типы: `@types/telegram-web-app`.
 - Код обязан работать и без Telegram: в обычном браузере `window.Telegram` может отсутствовать

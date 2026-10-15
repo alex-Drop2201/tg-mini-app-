@@ -6,10 +6,16 @@ export const tg: WebApp | undefined = (window as Partial<Window>).Telegram?.WebA
 
 export const isInTelegram = Boolean(tg?.initData)
 
-export const user = tg?.initDataUnsafe.user
+export const hasCloudStorage = isInTelegram && Boolean(tg?.isVersionAtLeast('6.9'))
 
-export function haptic(style: 'light' | 'medium' | 'heavy' = 'light') {
-  if (isInTelegram) tg?.HapticFeedback.impactOccurred(style)
+export const haptic = {
+  /** Короткий «щелчок»: сектор колеса прошёл под стрелкой. */
+  tick() {
+    if (isInTelegram) tg?.HapticFeedback.selectionChanged()
+  },
+  success() {
+    if (isInTelegram) tg?.HapticFeedback.notificationOccurred('success')
+  },
 }
 
 type WebApp = Window['Telegram']['WebApp']
