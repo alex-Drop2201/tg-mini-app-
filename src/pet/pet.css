@@ -1,0 +1,506 @@
+/* Стили таксы. Общие стили и цвета темы — в base.css. */
+@import '../base.css';
+
+.center {
+  text-align: center;
+}
+
+.pet-header {
+  text-align: center;
+}
+
+.pet-header .hint {
+  margin: 4px 0 0;
+}
+
+/* Сцена с питомцем */
+
+.scene {
+  position: relative;
+  padding: 60px 8px 4px;
+  border-radius: 16px;
+  background: var(--section-bg);
+  transition: background 0.6s;
+}
+
+.scene.night {
+  background: #1f2647;
+}
+
+.speech {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  max-width: calc(100% - 24px);
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateX(-50%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* Хвостик облачка смотрит вниз, на щенка */
+.speech::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  border: 6px solid transparent;
+  border-top-color: var(--bg);
+  border-bottom: 0;
+  transform: translateX(-50%);
+}
+
+/* Такса */
+
+.dog {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  overflow: visible;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dog-shadow {
+  fill: rgba(0, 0, 0, 0.1);
+}
+
+.dog-body,
+.dog-skin,
+.dog-legs rect {
+  fill: #c8743f;
+}
+
+.dog-legs-far rect,
+.dog-ear path {
+  fill: #8a4a26;
+}
+
+.dog-belly {
+  fill: #e3a476;
+}
+
+.dog-tail path {
+  fill: none;
+  stroke: #c8743f;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+.dog-nose,
+.dog-mouth {
+  fill: #2b1b17;
+}
+
+.dog-shine {
+  fill: #ffffff;
+}
+
+.dog-line {
+  fill: none;
+  stroke: #2b1b17;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.dog-tongue {
+  fill: #ff7a8a;
+}
+
+.dog-cheek {
+  fill: #ff8a80;
+  opacity: 0.45;
+}
+
+.dog-collar {
+  fill: var(--button);
+}
+
+.dog-tag {
+  fill: #f5c542;
+}
+
+.dog-dirt circle {
+  fill: #5b3a22;
+  opacity: 0.55;
+}
+
+/* Анимации. Повороты задаются вокруг точек крепления в координатах рисунка. */
+
+.dog-tail {
+  transform-origin: 66px 98px;
+  animation: wag 1.2s ease-in-out infinite alternate;
+}
+
+.mood-happy .dog-tail,
+.doing-pet .dog-tail,
+.doing-play .dog-tail,
+.doing-eat .dog-tail {
+  animation-duration: 0.22s;
+}
+
+.mood-sad .dog-tail {
+  animation: none;
+  transform: rotate(-50deg);
+}
+
+@keyframes wag {
+  from {
+    transform: rotate(-8deg);
+  }
+  to {
+    transform: rotate(16deg);
+  }
+}
+
+.dog-breath {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  50% {
+    transform: scaleY(1.035);
+  }
+}
+
+.dog-eye {
+  transform-origin: 194px 70px;
+  animation: blink 4.5s infinite;
+}
+
+@keyframes blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.dog-ear {
+  transform-origin: 174px 52px;
+  transition: transform 0.3s;
+}
+
+.mood-happy .dog-ear {
+  transform: rotate(12deg);
+}
+
+.mood-sad .dog-ear {
+  transform: rotate(-6deg);
+}
+
+.doing-pet .dog-ear,
+.doing-play .dog-ear {
+  animation: ear-flap 0.25s ease-in-out infinite alternate;
+}
+
+@keyframes ear-flap {
+  from {
+    transform: rotate(4deg);
+  }
+  to {
+    transform: rotate(20deg);
+  }
+}
+
+.dog-head {
+  transform-origin: 165px 100px;
+  transition: transform 0.3s;
+}
+
+.mood-sad .dog-head {
+  transform: rotate(6deg);
+}
+
+.doing-eat .dog-head {
+  animation: chomp 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes chomp {
+  from {
+    transform: rotate(18deg);
+  }
+  to {
+    transform: rotate(27deg);
+  }
+}
+
+.dog-figure {
+  transform-origin: 130px 150px;
+  transition: transform 0.4s;
+}
+
+.doing-play .dog-figure {
+  animation: jump 0.6s ease-in-out infinite;
+}
+
+@keyframes jump {
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.doing-wash .dog-figure {
+  animation: shake 0.2s ease-in-out infinite alternate;
+}
+
+@keyframes shake {
+  from {
+    transform: rotate(-2deg);
+  }
+  to {
+    transform: rotate(2deg);
+  }
+}
+
+/* Сон: щенок ложится, лапки прячутся, хвост опущен */
+
+.mood-sleeping .dog-figure {
+  transform: translateY(17px);
+}
+
+.mood-sleeping .dog-legs {
+  opacity: 0;
+}
+
+.mood-sleeping .dog-tail {
+  animation: none;
+  transform: rotate(-60deg);
+}
+
+.mood-sleeping .dog-breath {
+  animation-duration: 5s;
+}
+
+.snore text {
+  fill: #c7cdf5;
+  font-weight: 700;
+  animation: snore 3s ease-in-out infinite;
+}
+
+.snore text:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.snore text:nth-child(3) {
+  animation-delay: 1.2s;
+}
+
+@keyframes snore {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(4px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+/* Предметы и эффекты */
+
+.bowl circle {
+  fill: #9c5a2e;
+}
+
+.bowl-dish {
+  fill: var(--button);
+}
+
+.ball circle {
+  fill: #d4e157;
+}
+
+.ball path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.6;
+}
+
+.ball {
+  animation: bounce 0.3s ease-in infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(-42px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.soap {
+  fill: rgba(255, 255, 255, 0.55);
+  stroke: rgba(110, 170, 255, 0.9);
+  stroke-width: 1.2;
+  animation: rise 1.4s ease-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 1;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+}
+
+.heart {
+  fill: #ff4d6d;
+  opacity: 0;
+  animation: float-up 1.2s ease-out forwards;
+}
+
+@keyframes float-up {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-26px) scale(1.4);
+  }
+}
+
+.stink path {
+  fill: none;
+  stroke: #8b9a5b;
+  stroke-width: 2;
+  stroke-linecap: round;
+  animation: rise 2.4s ease-in-out infinite;
+}
+
+.stink path:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.stink path:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dog *,
+  .dog {
+    animation: none !important;
+  }
+}
+
+/* Шкалы */
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 24px 104px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-icon {
+  text-align: center;
+}
+
+.bar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--separator);
+  overflow: hidden;
+}
+
+.bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--button);
+  transition: width 0.6s ease;
+}
+
+.bar-fill.low {
+  background: var(--destructive);
+}
+
+/* Кнопки ухода */
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--section-bg);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.action:active {
+  transform: scale(0.97);
+}
+
+.action:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.action-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+/* Знакомство */
+
+.adopt {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  /* 16px и больше: иначе iOS увеличивает страницу при фокусе на поле */
+  font: inherit;
+  font-size: 17px;
+  text-align: center;
+  outline: none;
+}
+
+.text-input::placeholder {
+  color: var(--hint);
+}

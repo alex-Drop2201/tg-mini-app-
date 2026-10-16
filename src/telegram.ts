@@ -22,6 +22,13 @@ export const haptic = {
   success() {
     if (isInTelegram) tg?.HapticFeedback.notificationOccurred('success')
   },
+  warning() {
+    if (isInTelegram) tg?.HapticFeedback.notificationOccurred('warning')
+  },
+  /** Мягкий толчок, например при поглаживании. */
+  soft() {
+    if (isInTelegram) tg?.HapticFeedback.impactOccurred('soft')
+  },
 }
 
 type WebApp = Window['Telegram']['WebApp']
