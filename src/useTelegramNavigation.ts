@@ -4,16 +4,22 @@ import { hasBackButton, hasSettingsButton, tg } from './telegram.ts'
 /**
  * Подключает родные кнопки Telegram: пункт «Настройки» в меню ⋯ открывает настройки,
  * а кнопка «Назад» в шапке видна, пока открыт вложенный экран.
+ * settingsEnabled = false прячет «Настройки», когда настраивать пока нечего.
  */
-export function useTelegramNavigation(inSubscreen: boolean, openSettings: () => void, back: () => void) {
+export function useTelegramNavigation(
+  inSubscreen: boolean,
+  openSettings: () => void,
+  back: () => void,
+  settingsEnabled = true,
+) {
   useEffect(() => {
     const app = tg
-    if (!hasSettingsButton || !app) return
+    if (!settingsEnabled || !hasSettingsButton || !app) return
     app.SettingsButton.onClick(openSettings).show()
     return () => {
       app.SettingsButton.offClick(openSettings).hide()
     }
-  }, [openSettings])
+  }, [openSettings, settingsEnabled])
 
   useEffect(() => {
     const app = tg

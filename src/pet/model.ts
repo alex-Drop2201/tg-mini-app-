@@ -3,11 +3,14 @@
 // идёт и пока приложение закрыто. Уход мягкий: шкалы не опускаются ниже нуля,
 // питомец грустит, но не пропадает.
 
+import { parseLook, type Look } from './look.ts'
+
 export const STATS = ['hunger', 'fun', 'energy', 'clean'] as const
 export type Stat = (typeof STATS)[number]
 
 export type Pet = {
   name: string
+  look: Look
   bornAt: number
   updatedAt: number
   sleeping: boolean
@@ -27,8 +30,8 @@ const RATES: Record<'awake' | 'asleep', Record<Stat, number>> = {
   asleep: { hunger: -3, fun: 0, energy: 20, clean: -1 },
 }
 
-export function newPet(name: string, now: number): Pet {
-  return { name, bornAt: now, updatedAt: now, sleeping: false, hunger: 80, fun: 80, energy: 90, clean: 100 }
+export function newPet(name: string, look: Look, now: number): Pet {
+  return { name, look, bornAt: now, updatedAt: now, sleeping: false, hunger: 80, fun: 80, energy: 90, clean: 100 }
 }
 
 /**
@@ -135,5 +138,6 @@ export function parsePet(value: unknown): Pet | null {
     typeof p.updatedAt === 'number' &&
     typeof p.sleeping === 'boolean' &&
     STATS.every((stat) => typeof p[stat] === 'number')
-  return valid ? (p as Pet) : null
+  // У питомцев, заведённых до выбора внешности, её нет: они остаются рыжими таксами.
+  return valid ? { ...(p as Pet), look: parseLook(p.look) } : null
 }

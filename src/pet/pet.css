@@ -1,4 +1,4 @@
-/* Стили таксы. Общие стили и цвета темы — в base.css. */
+/* Стили питомца. Общие стили и цвета темы — в base.css. */
 @import '../base.css';
 
 .center {
@@ -13,143 +13,151 @@
   margin: 4px 0 0;
 }
 
-/* Сцена с питомцем */
+/* Сцена */
 
-.scene {
+.stage {
   position: relative;
-  padding: 60px 8px 4px;
-  border-radius: 16px;
-  background: var(--section-bg);
-  transition: background 0.6s;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.scene.night {
-  background: #1f2647;
+.scene-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stage .scene-art {
+  cursor: pointer;
 }
 
 .speech {
   position: absolute;
   top: 12px;
   left: 50%;
-  max-width: calc(100% - 24px);
+  max-width: calc(100% - 112px);
   margin: 0;
   padding: 8px 14px;
-  border-radius: 16px;
-  background: var(--bg);
-  color: var(--text);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1c1c1e;
   font-size: 15px;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transform: translateX(-50%);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
-/* Хвостик облачка смотрит вниз, на щенка */
-.speech::after {
-  content: '';
+.stage-button {
   position: absolute;
-  bottom: -6px;
-  left: 50%;
-  border: 6px solid transparent;
-  border-top-color: var(--bg);
-  border-bottom: 0;
-  transform: translateX(-50%);
-}
-
-/* Такса */
-
-.dog {
-  display: block;
-  width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
-  overflow: visible;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
-.dog-shadow {
-  fill: rgba(0, 0, 0, 0.1);
+.stage-button:active {
+  transform: scale(0.92);
 }
 
-.dog-body,
-.dog-skin,
-.dog-legs rect {
-  fill: #c8743f;
+/* Ночь: небо темнеет, пока питомец спит */
+
+.night-sky {
+  opacity: 0;
+  transition: opacity 0.8s;
 }
 
-.dog-legs-far rect,
-.dog-ear path {
-  fill: #8a4a26;
+.night-sky.on {
+  opacity: 1;
 }
 
-.dog-belly {
-  fill: #e3a476;
+.twinkle {
+  animation: twinkle 2.4s ease-in-out infinite;
 }
 
-.dog-tail path {
-  fill: none;
-  stroke: #c8743f;
-  stroke-width: 9;
-  stroke-linecap: round;
+@keyframes twinkle {
+  50% {
+    opacity: 0.25;
+  }
 }
 
-.dog-nose,
-.dog-mouth {
-  fill: #2b1b17;
+.flake {
+  animation: snowfall 6s linear infinite;
 }
 
-.dog-shine {
-  fill: #ffffff;
+@keyframes snowfall {
+  from {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(70px);
+    opacity: 0;
+  }
 }
 
-.dog-line {
-  fill: none;
-  stroke: #2b1b17;
-  stroke-width: 2.4;
-  stroke-linecap: round;
+/* Детали питомца */
+
+.pet-shadow {
+  fill: rgba(0, 0, 0, 0.12);
 }
 
-.dog-tongue {
-  fill: #ff7a8a;
+.pet-collar {
+  fill: var(--button);
 }
 
-.dog-cheek {
+.pet-cheek {
   fill: #ff8a80;
   opacity: 0.45;
 }
 
-.dog-collar {
-  fill: var(--button);
-}
-
-.dog-tag {
-  fill: #f5c542;
-}
-
-.dog-dirt circle {
+.pet-dirt circle {
   fill: #5b3a22;
   opacity: 0.55;
 }
 
-/* Анимации. Повороты задаются вокруг точек крепления в координатах рисунка. */
+/*
+ * Анимации. Точки поворота задаются инлайном из anatomy.tsx, а углы и смещения
+ * конкретного вида — CSS-переменными на .critter.
+ */
 
-.dog-tail {
-  transform-origin: 66px 98px;
+.pet-tail {
   animation: wag 1.2s ease-in-out infinite alternate;
 }
 
-.mood-happy .dog-tail,
-.doing-pet .dog-tail,
-.doing-play .dog-tail,
-.doing-eat .dog-tail {
+.mood-happy .pet-tail,
+.doing-pet .pet-tail,
+.doing-play .pet-tail,
+.doing-eat .pet-tail {
   animation-duration: 0.22s;
 }
 
-.mood-sad .dog-tail {
+.mood-sad .pet-tail {
   animation: none;
   transform: rotate(-50deg);
 }
@@ -163,7 +171,7 @@
   }
 }
 
-.dog-breath {
+.pet-breath {
   transform-box: fill-box;
   transform-origin: center bottom;
   animation: breathe 3s ease-in-out infinite;
@@ -175,8 +183,7 @@
   }
 }
 
-.dog-eye {
-  transform-origin: 194px 70px;
+.pet-eye {
   animation: blink 4.5s infinite;
 }
 
@@ -191,61 +198,59 @@
   }
 }
 
-.dog-ear {
-  transform-origin: 174px 52px;
+.pet-ear {
   transition: transform 0.3s;
 }
 
-.mood-happy .dog-ear {
-  transform: rotate(12deg);
+.mood-happy .pet-ear {
+  transform: rotate(var(--ear-happy));
 }
 
-.mood-sad .dog-ear {
-  transform: rotate(-6deg);
+.mood-sad .pet-ear {
+  transform: rotate(var(--ear-sad));
 }
 
-.doing-pet .dog-ear,
-.doing-play .dog-ear {
+.doing-pet .pet-ear,
+.doing-play .pet-ear {
   animation: ear-flap 0.25s ease-in-out infinite alternate;
 }
 
 @keyframes ear-flap {
   from {
-    transform: rotate(4deg);
+    transform: rotate(calc(var(--ear-happy) - 8deg));
   }
   to {
-    transform: rotate(20deg);
+    transform: rotate(calc(var(--ear-happy) + 8deg));
   }
 }
 
-.dog-head {
-  transform-origin: 165px 100px;
+.pet-head {
   transition: transform 0.3s;
 }
 
-.mood-sad .dog-head {
+.mood-sad .pet-head {
   transform: rotate(6deg);
 }
 
-.doing-eat .dog-head {
+.doing-eat .pet-head {
   animation: chomp 0.4s ease-in-out infinite alternate;
 }
 
 @keyframes chomp {
   from {
-    transform: rotate(18deg);
+    transform: rotate(var(--eat-from));
   }
   to {
-    transform: rotate(27deg);
+    transform: rotate(var(--eat-to));
   }
 }
 
-.dog-figure {
+.pet-figure {
   transform-origin: 130px 150px;
   transition: transform 0.4s;
 }
 
-.doing-play .dog-figure {
+.doing-play .pet-figure {
   animation: jump 0.6s ease-in-out infinite;
 }
 
@@ -255,7 +260,7 @@
   }
 }
 
-.doing-wash .dog-figure {
+.doing-wash .pet-figure {
   animation: shake 0.2s ease-in-out infinite alternate;
 }
 
@@ -268,27 +273,27 @@
   }
 }
 
-/* Сон: щенок ложится, лапки прячутся, хвост опущен */
+/* Сон: питомец ложится, лапки прячутся, хвост опущен */
 
-.mood-sleeping .dog-figure {
-  transform: translateY(17px);
+.mood-sleeping .pet-figure {
+  transform: translateY(var(--sleep-dy));
 }
 
-.mood-sleeping .dog-legs {
+.mood-sleeping .pet-legs {
   opacity: 0;
 }
 
-.mood-sleeping .dog-tail {
+.mood-sleeping .pet-tail {
   animation: none;
   transform: rotate(-60deg);
 }
 
-.mood-sleeping .dog-breath {
+.mood-sleeping .pet-breath {
   animation-duration: 5s;
 }
 
 .snore text {
-  fill: #c7cdf5;
+  fill: #e3e7ff;
   font-weight: 700;
   animation: snore 3s ease-in-out infinite;
 }
@@ -397,36 +402,84 @@
   animation-delay: 1.6s;
 }
 
+/* Превью без движения и уважение к настройке «Уменьшить движение» */
+
+.still,
+.still * {
+  animation: none !important;
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .dog *,
-  .dog {
+  .scene-art,
+  .scene-art * {
     animation: none !important;
   }
 }
 
-/* Шкалы */
+/* Шкалы: у каждой свой цвет */
 
-.stats {
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-tile {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 14px 16px;
-}
-
-.stat {
-  display: grid;
-  grid-template-columns: 24px 104px 1fr;
-  align-items: center;
   gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--section-bg);
 }
 
-.stat-icon {
-  text-align: center;
+.stat-hunger {
+  --c: #ff9f0a;
+}
+
+.stat-fun {
+  --c: #ff375f;
+}
+
+.stat-energy {
+  --c: #ffcc00;
+}
+
+.stat-clean {
+  --c: #32ade6;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.stat-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stat-value {
+  color: var(--hint);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-tile.low .stat-value {
+  color: var(--destructive);
+  font-weight: 600;
 }
 
 .bar {
-  height: 10px;
-  border-radius: 5px;
+  display: block;
+  height: 8px;
+  border-radius: 4px;
   background: var(--separator);
   overflow: hidden;
 }
@@ -434,50 +487,204 @@
 .bar-fill {
   display: block;
   height: 100%;
-  border-radius: 5px;
-  background: var(--button);
+  border-radius: 4px;
+  background: var(--c);
   transition: width 0.6s ease;
 }
 
-.bar-fill.low {
-  background: var(--destructive);
+.stat-tile.low .bar-fill {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* Кнопки ухода */
 
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
 }
 
 .action {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 14px 8px;
+  gap: 6px;
+  padding: 0;
   border: 0;
-  border-radius: 14px;
-  background: var(--section-bg);
+  background: none;
   color: var(--text);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
 }
 
-.action:active {
-  transform: scale(0.97);
+.action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  background: var(--tint);
+  font-size: 28px;
+  transition: transform 0.15s;
+}
+
+.action:active .action-icon {
+  transform: scale(0.9);
 }
 
 .action:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: default;
 }
 
-.action-icon {
-  font-size: 28px;
-  line-height: 1;
+.action-feed {
+  --tint: rgba(255, 159, 10, 0.18);
+}
+
+.action-play {
+  --tint: rgba(255, 55, 95, 0.16);
+}
+
+.action-wash {
+  --tint: rgba(50, 173, 230, 0.18);
+}
+
+.action-sleep {
+  --tint: rgba(94, 92, 230, 0.18);
+}
+
+.action-wake {
+  --tint: rgba(255, 204, 0, 0.24);
+}
+
+/* Внешность */
+
+.look-preview {
+  position: sticky;
+  top: var(--tg-content-safe-area-inset-top, 0px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: -16px;
+  padding: 16px 0 6px;
+  background: var(--bg);
+}
+
+.look-preview .stage {
+  width: min(100%, 300px);
+  margin: 0 auto;
+}
+
+.look-preview .stage .scene-art {
+  cursor: default;
+}
+
+.segmented {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 10px;
+  background: var(--section-bg);
+}
+
+.segmented button {
+  flex: 1;
+  padding: 7px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.segmented button.on {
+  background: var(--bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.pick-grid.two {
+  grid-template-columns: 1fr 1fr;
+}
+
+.pick {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 6px 10px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--section-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s,
+    transform 0.15s;
+}
+
+.pick:active {
+  transform: scale(0.97);
+}
+
+.pick.selected {
+  box-shadow: inset 0 0 0 2.5px var(--button);
+}
+
+.pick.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--button);
+  color: var(--button-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pick-art {
+  display: block;
+  width: 100%;
+}
+
+.pick-art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pick .scene-art {
+  border-radius: 10px;
+}
+
+.pick-label {
+  font-size: 13px;
+  font-weight: 600;
 }
 
 /* Знакомство */
@@ -485,7 +692,11 @@
 .adopt {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+}
+
+.adopt .button {
+  margin-top: 4px;
 }
 
 .text-input {

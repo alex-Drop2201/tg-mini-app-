@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useStoredState } from '../useStoredState.ts'
+import type { Look } from './look.ts'
 import { act, newPet, parsePet, simulate, type Action, type Pet } from './model.ts'
 
 type Stored = { pet: Pet | null }
@@ -17,19 +18,24 @@ function parseStored(value: unknown): Stored | null {
 
 /**
  * Питомец «вживую»: раз в секунду досчитываем состояние от сохранённого снимка.
- * В облако пишется только снимок после действия хозяина.
+ * В облако пишется только снимок после действия хозяина или смены внешности.
  */
 export function usePet() {
   const [stored, setStored] = useStoredState('pet_v1', NO_PET, parseStored)
   const now = useNow(TICK_MS)
-  const pet = stored?.pet ? simulate(stored.pet, now) : null
+  const snapshot = stored?.pet ?? null
+  const pet = snapshot ? simulate(snapshot, now) : null
 
-  const adopt = (name: string) => setStored({ pet: newPet(name, Date.now()) })
+  const adopt = (name: string, look: Look) => setStored({ pet: newPet(name, look, Date.now()) })
   const perform = (action: Action) => {
-    if (stored?.pet) setStored({ pet: act(stored.pet, action, Date.now()) })
+    if (snapshot) setStored({ pet: act(snapshot, action, Date.now()) })
+  }
+  // Внешность и имя не влияют на шкалы, поэтому меняем их прямо в снимке.
+  const restyle = (change: { look?: Look; name?: string }) => {
+    if (snapshot) setStored({ pet: { ...snapshot, ...change } })
   }
 
-  return { loading: stored === null, pet, now, adopt, perform }
+  return { loading: stored === null, pet, now, adopt, perform, restyle }
 }
 
 function useNow(interval: number) {
