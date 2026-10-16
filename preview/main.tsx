@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { Chibi, type ChibiStyle, type Expression } from '../src/pet/chibi/Chibi.tsx'
 import { Doodle, type DoodleStyle } from '../src/pet/doodle/Doodle.tsx'
+import { DachshundArt, type PortraitStyle } from '../src/pet/portrait/Portrait.tsx'
 import { FURS, SPECIES, type FurId, type SpeciesId } from '../src/pet/look.ts'
 
 const params = new URLSearchParams(location.search)
@@ -22,7 +23,28 @@ const DOODLES: [DoodleStyle, string, string, Record<string, string>][] = [
   ['painted', '3. Рисованный', 'как ослик и бобёр: шершавый контур, фактура, яркий фон', { dachshund: '#ff8fb1', cat: '#ffd84d', fox: '#8fd17a' }],
 ]
 
+const PORTRAITS: [PortraitStyle, string, string][] = [
+  ['peek', '1. Как колли', 'выглядывает из-за края, чистая линия'],
+  ['painted', '2. Как такса и ослик', 'портрет крупно, гуашь, глаза-пуговицы'],
+  ['walk', '3. Как утёнок', 'в полный рост на ходу, плоские цвета'],
+]
+
 function App() {
+  if (mode === 'portrait') {
+    return (
+      <div style={{ display: 'flex', gap: 12, padding: 12 }}>
+        {PORTRAITS.map(([st, title, sub]) => (
+          <div key={st} style={{ width: 380 }}>
+            <svg viewBox="0 0 200 200" style={{ width: 380, height: 380, borderRadius: 20, border: '1px solid #e5e5ea', display: 'block' }}>
+              <DachshundArt style={st} />
+            </svg>
+            <div style={{ font: '700 26px -apple-system,Roboto,sans-serif', margin: '10px 4px 2px' }}>{title}</div>
+            <div style={{ font: '18px -apple-system,Roboto,sans-serif', color: '#666', margin: '0 4px' }}>{sub}</div>
+          </div>
+        ))}
+      </div>
+    )
+  }
   if (mode === 'doodle') {
     return (
       <div style={{ padding: 12, width: 800 }}>
