@@ -24,18 +24,18 @@ const DOODLES: [DoodleStyle, string, string, Record<string, string>][] = [
 ]
 
 const PORTRAITS: [PortraitStyle, string, string][] = [
-  ['peek', '1. Как колли', 'выглядывает из-за края, чистая линия'],
-  ['painted', '2. Как такса и ослик', 'портрет крупно, гуашь, глаза-пуговицы'],
-  ['walk', '3. Как утёнок', 'в полный рост на ходу, плоские цвета'],
+  ['peek', '1. Как колли', 'выглядывает из-за края, ровная линия, глаза-бусинки'],
+  ['painted', '2. Как такса и ослик', 'крупный портрет, линия мелком, фактура краски, глаза-пуговицы'],
+  ['walk', '3. Как утёнок', 'целиком, шлёпает по лужам в сапожках, плоские цвета'],
 ]
 
 function App() {
   if (mode === 'portrait') {
     return (
-      <div style={{ display: 'flex', gap: 12, padding: 12 }}>
+      <div style={{ display: 'flex', flexDirection: params.get('row') ? 'row' : 'column', gap: 18, padding: 12 }}>
         {PORTRAITS.map(([st, title, sub]) => (
-          <div key={st} style={{ width: 380 }}>
-            <svg viewBox="0 0 200 200" style={{ width: 380, height: 380, borderRadius: 20, border: '1px solid #e5e5ea', display: 'block' }}>
+          <div key={st} style={{ width: 366 }}>
+            <svg viewBox="0 0 200 200" style={{ width: 366, height: 366, borderRadius: 20, border: '1px solid #e5e5ea', display: 'block' }}>
               <DachshundArt style={st} />
             </svg>
             <div style={{ font: '700 26px -apple-system,Roboto,sans-serif', margin: '10px 4px 2px' }}>{title}</div>
