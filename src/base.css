@@ -150,6 +150,7 @@ h1 {
   background: none;
   color: var(--link);
   font-size: 17px;
+  text-decoration: none;
   cursor: pointer;
 }
 

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { HomeLink } from '../HomeLink.tsx'
 import { OptionsEditor } from '../OptionsEditor.tsx'
 import { haptic } from '../telegram.ts'
 import { useSpin } from '../wheel/useSpin.ts'
@@ -42,6 +43,7 @@ export function WheelScreen(props: Props) {
 
   return (
     <main className="app" hidden={hidden}>
+      <HomeLink />
       <h1>Колесо решений</h1>
 
       <Wheel

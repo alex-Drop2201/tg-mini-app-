@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { HomeLink } from '../../HomeLink.tsx'
 import { haptic } from '../../telegram.ts'
 import { Scene } from '../critter/Scene.tsx'
 import { defaultLook, SPECIES, type Look, type SpeciesId } from '../look.ts'
@@ -24,6 +25,7 @@ export function AdoptScreen({ onAdopt }: { onAdopt: (name: string, look: Look) =
 
   return (
     <main className="app pet-app">
+      <HomeLink />
       <h1>Кого заведём?</h1>
       <div className="stage">
         <Scene look={defaultLook(species)} mood="happy" />

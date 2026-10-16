@@ -1,4 +1,5 @@
 import { useCallback, useLayoutEffect, useState } from 'react'
+import { goHome } from '../home.ts'
 import { useTelegramNavigation } from '../useTelegramNavigation.ts'
 import { AdoptScreen } from './screens/AdoptScreen.tsx'
 import { LookScreen } from './screens/LookScreen.tsx'
@@ -16,7 +17,12 @@ export default function PetApp() {
 
   // «Настройки» в меню ⋯ Telegram открывают внешность, «Назад» в шапке возвращает.
   // Пока питомца не завели, настраивать нечего.
-  useTelegramNavigation(screen === 'look', openLook, back, pet !== null)
+  useTelegramNavigation({
+    inSubscreen: screen === 'look',
+    back,
+    openSettings: pet ? openLook : undefined,
+    home: goHome,
+  })
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0)

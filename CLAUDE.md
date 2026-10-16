@@ -9,11 +9,18 @@
 
 ## Проект
 
-Два Telegram Mini App на React 19 + TypeScript + Vite в одном репозитории (многостраничная сборка Vite):
-«Колесо решений» (`index.html`, корень сайта) и «Питомец», тамагочи (`pet/index.html`, путь `/pet/`).
-У каждого свой бот. Деплой на GitHub Pages через `.github/workflows/deploy.yml` при push в `main`
+Telegram Mini App на React 19 + TypeScript + Vite, многостраничная сборка Vite:
+главный экран «Мои приложения» (`index.html`, корень сайта, `src/hub/`) с карточками приложений,
+«Колесо решений» (`wheel/index.html`) и «Питомец», тамагочи (`pet/index.html`).
+Один бот на всё: в Menu Button стоит адрес корня, поэтому облако Telegram общее для всех страниц
+(у каждого приложения свои ключи). Новое приложение = своя папка с `index.html`, вход в
+`vite.config.ts` и карточка в `src/hub/Hub.tsx`.
+Деплой на GitHub Pages через `.github/workflows/deploy.yml` при push в `main`
 (только если репозиторий публичный). Общий код (`src/telegram.ts`, `src/storage.ts`,
-`src/useStoredState.ts`, `src/base.css`) меняй с оглядкой на оба приложения.
+`src/useStoredState.ts`, `src/useTelegramNavigation.ts`, `src/base.css`) меняй с оглядкой на все страницы.
+Навигация: «Назад» в шапке Telegram с главного экрана приложения ведёт в корень (`goHome`),
+в браузере вместо неё ссылка `HomeLink`. Кнопки «Назад»/«Настройки» каждая страница задаёт явно,
+в том числе прячет: Telegram сохраняет их состояние между страницами.
 Планы по этапам с отметками о готовности лежат в README: после этапа обновляй галочки.
 
 Колесо:
@@ -45,7 +52,7 @@
 npm run lint && npm run build
 ```
 
-Для UI-изменений: `npm run preview` (порт 4173, такса — по пути `/pet/`) и скриншот через Playwright
+Для UI-изменений: `npm run preview` (порт 4173: главный экран `/`, колесо `/wheel/`, питомец `/pet/`) и скриншот через Playwright
 (`/opt/node22/lib/node_modules/playwright`, Chromium уже установлен) с viewport 390×700
 в светлой и тёмной теме, затем отправь его владельцу. Домены telegram.org из облачного
 контейнера заблокированы, поэтому ошибка загрузки `telegram-web-app.js` в превью ожидаема.

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { HomeLink } from '../../HomeLink.tsx'
 import { haptic } from '../../telegram.ts'
 import type { Activity } from '../critter/Critter.tsx'
 import { Scene } from '../critter/Scene.tsx'
@@ -84,6 +85,7 @@ export function PetScreen({ pet, now, perform, onOpenLook }: Props) {
 
   return (
     <main className="app pet-app">
+      <HomeLink />
       <header className="pet-header">
         <h1>{pet.name.trim() || info.defaultName}</h1>
         <p className="hint">

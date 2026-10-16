@@ -3,6 +3,7 @@ import { paletteOf, presetName, useColorSettings } from './colors.ts'
 import { labelOf, useOptions } from './options.ts'
 import { ColorsScreen } from './screens/ColorsScreen.tsx'
 import { WheelScreen } from './screens/WheelScreen.tsx'
+import { goHome } from './home.ts'
 import { useTelegramNavigation } from './useTelegramNavigation.ts'
 
 type Screen = 'wheel' | 'colors'
@@ -21,7 +22,7 @@ export default function App() {
   }, [])
   const back = useCallback(() => setScreen('wheel'), [])
 
-  useTelegramNavigation(screen !== 'wheel', openColors, back)
+  useTelegramNavigation({ inSubscreen: screen !== 'wheel', back, openSettings: openColors, home: goHome })
 
   // Настройки открываются сверху, а при возврате колесо там же, где его оставили.
   useLayoutEffect(() => {

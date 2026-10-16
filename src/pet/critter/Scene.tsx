@@ -16,16 +16,19 @@ type Props = {
   dirt?: number
   /** Без анимаций: для маленьких превью. */
   still?: boolean
+  /** Заполнить рамку другой пропорции, обрезав небо, а не землю. */
+  crop?: boolean
   onClick?: () => void
   className?: string
 }
 
-export function Scene({ look, mood, activity = null, dirt = 0, still = false, onClick, className = '' }: Props) {
+export function Scene({ look, mood, activity = null, dirt = 0, still = false, crop = false, onClick, className = '' }: Props) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
   return (
     <svg
       className={`scene-art${still ? ' still' : ''} ${className}`}
       viewBox="0 0 320 230"
+      preserveAspectRatio={crop ? 'xMidYMax slice' : undefined}
       role="img"
       aria-label={SCENES[look.scene]}
       onClick={onClick}

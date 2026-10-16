@@ -8,9 +8,10 @@ export default defineConfig({
   base: './',
   build: {
     rolldownOptions: {
-      // Два приложения: колесо в корне сайта, такса в /pet/.
+      // Главный экран со списком приложений в корне сайта, приложения — в своих папках.
       input: {
-        wheel: new URL('./index.html', import.meta.url).pathname,
+        hub: new URL('./index.html', import.meta.url).pathname,
+        wheel: new URL('./wheel/index.html', import.meta.url).pathname,
         pet: new URL('./pet/index.html', import.meta.url).pathname,
       },
     },

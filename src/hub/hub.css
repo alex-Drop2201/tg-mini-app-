@@ -1,0 +1,151 @@
+/* Главный экран. Рисунки колеса и питомца берут стили своих приложений. */
+@import '../index.css';
+@import '../pet/pet.css';
+
+.hub {
+  gap: 18px;
+}
+
+.hub-header {
+  margin-top: 8px;
+}
+
+.hub-header .hint {
+  margin: 0 0 2px;
+  font-size: 15px;
+}
+
+.hub-header h1 {
+  margin: 0;
+  font-size: 30px;
+  text-align: left;
+}
+
+/* Карточка приложения */
+
+.app-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--section-bg);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-card:active {
+  transform: scale(0.98);
+}
+
+.app-card-art {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.app-card-art .scene-art {
+  width: 100%;
+  height: 100%;
+  cursor: inherit;
+}
+
+.app-card-alert {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  background: var(--destructive);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.app-card-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px 16px;
+}
+
+.app-card-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.app-card-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.app-card-subtitle {
+  overflow: hidden;
+  color: var(--hint);
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.app-card-open {
+  flex: none;
+  padding: 7px 16px;
+  border-radius: 16px;
+  background: var(--button);
+  color: var(--button-text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Колесо на карточке: медленно крутится на фоне мягкого свечения */
+
+.wheel-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.wheel-art::before {
+  content: '';
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--button);
+  opacity: 0.12;
+  filter: blur(24px);
+}
+
+.hub-wheel {
+  position: relative;
+  width: auto;
+  height: 86%;
+  cursor: inherit;
+}
+
+.hub-wheel > g:first-of-type {
+  animation: hub-spin 40s linear infinite;
+}
+
+@keyframes hub-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-wheel > g:first-of-type {
+    animation: none;
+  }
+}
