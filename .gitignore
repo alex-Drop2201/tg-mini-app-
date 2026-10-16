@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Скиллы без лицензии: их копию в публичный репозиторий не кладём (см. .claude/skills/SOURCES.md)
+.claude/skills/character-design-sheet/
+.claude/skills/svg-animations/
+.claude/skills/telegram-mini-apps-react/
